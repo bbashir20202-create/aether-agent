@@ -1,26 +1,28 @@
+export const dynamic = 'force-dynamic';
+
 export async function POST(request) {
   try {
-    const { message } = await request.json();
+    const { message, history } = await request.json();
 
     if (!message) {
-      return Response.json({ response: "Please type a message." }, { status: 400 });
+      return Response.json({ response: "Please type a message." });
     }
 
     let reply = "I'm here boss. ";
 
-    const lowerMessage = message.toLowerCase();
+    const lower = message.toLowerCase();
 
-    if (lowerMessage.includes("hello") || lowerMessage.includes("hi")) {
-      reply = "Hello Boss 👋 I'm Aether. I have memory. What would you like to do today?";
+    if (lower.includes("hello") || lower.includes("hi")) {
+      reply = "Hello Boss 👋 I'm Aether, your personal agent with memory. What can I do for you today?";
     } 
-    else if (lowerMessage.includes("who are you") || lowerMessage.includes("your name")) {
-      reply = "I am Aether — your personal cloud agent with memory. I can help you with research, business planning, analysis, and more.";
+    else if (lower.includes("who are you") || lower.includes("your name")) {
+      reply = "I am Aether — a cloud-based AI agent. I can remember our conversations and help you with research, business planning, analysis, and more.";
     } 
-    else if (lowerMessage.includes("remember")) {
-      reply = "I remember our previous conversations. Tell me what you want me to focus on.";
+    else if (lower.includes("remember") || lower.includes("memory")) {
+      reply = "I remember our previous chats. Tell me what you want me to focus on or research.";
     } 
     else {
-      reply = `You said: "${message}".\n\nI'm ready. Tell me what you want me to do — research scrap metal market, make business plan, analyze something, or anything else.`;
+      reply = `You said: "${message}"\n\nI'm ready. You can ask me to:\n• Research scrap metal market\n• Make business plan\n• Analyze competitors\n• Give ideas\n• Anything else`;
     }
 
     return Response.json({ response: reply });
@@ -28,7 +30,7 @@ export async function POST(request) {
   } catch (error) {
     console.error(error);
     return Response.json({ 
-      response: "Sorry, something went wrong. Please try again." 
-    }, { status: 500 });
+      response: "Sorry, I had an error. Please try again." 
+    });
   }
 }
